@@ -1,4 +1,4 @@
-This repo is almost same with [docker-redis-culster](https://github.com/Grokzen/docker-redis-cluster), except it's running port(6379 => 6379).
+This repo is almost same with [docker-redis-culster](https://github.com/Grokzen/docker-redis-cluster), except it's running port(7000 => 6379).
 
 # docker-redis-cluster
 
