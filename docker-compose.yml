@@ -1,6 +1,7 @@
 version: '2'
 services:
   redis-cluster:
+    image: scvgoe/redis-cluster
     environment:
      IP: ${REDIS_CLUSTER_IP}
      SENTINEL: ${REDIS_USE_SENTINEL}
