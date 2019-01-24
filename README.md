@@ -1,3 +1,5 @@
+This repo is almost same with [docker-redis-culster](https://github.com/Grokzen/docker-redis-cluster), except it's running port(6379 => 6379).
+
 # docker-redis-cluster
 
 [![Docker Stars](https://img.shields.io/docker/stars/grokzen/redis-cluster.svg)](hub])
@@ -9,16 +11,16 @@ Docker image with redis built and installed from source and a cluster is built.
 
 The main primary use for this container is to test redis cluster code. Specially https://github.com/Grokzen/redis-py-cluster
 
-This repo is not intended to be a production quality docker build. It will also not be changed to use multiple containers or move away from supervisord, or to have support for different cluster managers, for example kubernetes, docker-ee or swarm. It will also not be made to handle persistent data between runs. However, any suggestions on improvements will be considered. 
+This repo is not intended to be a production quality docker build. It will also not be changed to use multiple containers or move away from supervisord, or to have support for different cluster managers, for example kubernetes, docker-ee or swarm. It will also not be made to handle persistent data between runs. However, any suggestions on improvements will be considered.
 
 The container is made to be quick and easy to start, use and run.
 
 
 ## Redis instances inside the container
 
-The cluster is 6 redis instances running with 3 master & 3 slaves, one slave for each master. They run on ports 7000 to 7005.
+The cluster is 6 redis instances running with 3 master & 3 slaves, one slave for each master. They run on ports 6379 to 6384.
 
-If the flag `-e "STANDALONE=true"` is passed there is 2 standalone instances runnin on port 7006 and 7007.
+If the flag `-e "STANDALONE=true"` is passed there is 2 standalone instances runnin on port 6385 and 6386.
 
 If the flag `-e "SENTINEL=true"` is passed there are 3 Sentinel nodes running on ports 5000 to 5002 matching cluster's master instances.
 
@@ -63,7 +65,7 @@ To stop the container run:
 
 To connect to your cluster you can use the redis-cli tool:
 
-    redis-cli -c -p 7000
+    redis-cli -c -p 6379
 
 Or the built redis-cli tool inside the container that will connect to the cluster inside the container
 

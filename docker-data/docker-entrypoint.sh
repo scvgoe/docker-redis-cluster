@@ -4,12 +4,12 @@ if [ "$1" = 'redis-cluster' ]; then
     # Allow passing in cluster IP by argument or environmental variable
     IP="${2:-$IP}"
 
-    max_port=7005
+    max_port=6384
     if [ "$STANDALONE" = "true" ]; then
-      max_port=7007
+      max_port=6386
     fi
 
-    for port in `seq 7000 $max_port`; do
+    for port in `seq 6379 $max_port`; do
       mkdir -p /redis-conf/${port}
       mkdir -p /redis-data/${port}
 
@@ -17,13 +17,13 @@ if [ "$1" = 'redis-cluster' ]; then
         rm /redis-data/${port}/nodes.conf
       fi
 
-      if [ "$port" -lt "7006" ]; then
+      if [ "$port" -lt "6385" ]; then
         PORT=${port} envsubst < /redis-conf/redis-cluster.tmpl > /redis-conf/${port}/redis.conf
       else
         PORT=${port} envsubst < /redis-conf/redis.tmpl > /redis-conf/${port}/redis.conf
       fi
 
-      if [ "$port" -lt "7003" ]; then
+      if [ "$port" -lt "6382" ]; then
         if [ "$SENTINEL" = "true" ]; then
           PORT=${port} SENTINEL_PORT=$((port - 2000)) envsubst < /redis-conf/sentinel.tmpl > /redis-conf/sentinel-${port}.conf
           cat /redis-conf/sentinel-${port}.conf
@@ -47,15 +47,15 @@ if [ "$1" = 'redis-cluster' ]; then
     if [ $? -eq 0 ]
     then
       echo "Using old redis-trib.rb to create the cluster"
-      echo "yes" | ruby /redis/src/redis-trib.rb create --replicas 1 ${IP}:7000 ${IP}:7001 ${IP}:7002 ${IP}:7003 ${IP}:7004 ${IP}:7005
+      echo "yes" | ruby /redis/src/redis-trib.rb create --replicas 1 ${IP}:6379 ${IP}:6380 ${IP}:6381 ${IP}:6382 ${IP}:6383 ${IP}:6384
     else
       echo "Using redis-cli to create the cluster"
-      echo "yes" | /redis/src/redis-cli --cluster create --cluster-replicas 1 ${IP}:7000 ${IP}:7001 ${IP}:7002 ${IP}:7003 ${IP}:7004 ${IP}:7005
+      echo "yes" | /redis/src/redis-cli --cluster create --cluster-replicas 1 ${IP}:6379 ${IP}:6380 ${IP}:6381 ${IP}:6382 ${IP}:6383 ${IP}:6384
     fi
 
 
-    for port in 7000 7001 7002; do
-      redis-sentinel /redis-conf/sentinel-7000.conf &
+    for port in 6379 6380 6381; do
+      redis-sentinel /redis-conf/sentinel-6379.conf &
     done
 
     tail -f /var/log/supervisor/redis*.log

@@ -5,7 +5,7 @@ help:
 	@echo "  down          stops the running docker-compose containers"
 	@echo "  rebuild       rebuilds the image from scratch without using any cached layers"
 	@echo "  bash          starts bash inside a running container."
-	@echo "  cli           run redis-cli inside the container on the server with port 7000"
+	@echo "  cli           run redis-cli inside the container on the server with port 6379"
 	@echo " ---------"
 	@echo "Bulk build options"
 	@echo "  build-3.0"
@@ -38,7 +38,7 @@ bash:
 	docker-compose exec redis-cluster /bin/bash
 
 cli:
-	docker-compose exec redis-cluster /redis/src/redis-cli -p 7000
+	docker-compose exec redis-cluster /redis/src/redis-cli -p 6379
 
 build-3.0:
 	docker build --build-arg redis_version=3.0.0 -t grokzen/redis-cluster .
